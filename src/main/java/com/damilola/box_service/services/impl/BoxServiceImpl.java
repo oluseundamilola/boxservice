@@ -9,6 +9,7 @@ import com.damilola.box_service.enums.BoxState;
 import com.damilola.box_service.services.BoxService;
 import com.damilola.box_service.utils.ResponseUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BoxServiceImpl implements BoxService {
 
     private final BoxRepository boxRepository;
@@ -25,12 +27,13 @@ public class BoxServiceImpl implements BoxService {
     @Override
     public DefaultResponse<BoxResponse> createBox(CreateBoxRequest request) {
 
-        // Check if txref already exists
+
+        log.info("Checking if txref already exists");
         if (boxRepository.existsByTxref(request.getTxref())) {
             return ResponseUtil.failure("Box with this txref already exists");
         }
 
-        // Create new Box
+        log.info("Creating new box");
         Box box = new Box();
         box.setTxref(request.getTxref());
         box.setWeightLimit(request.getWeightLimit());
@@ -39,7 +42,7 @@ public class BoxServiceImpl implements BoxService {
         // Default state
         box.setState(BoxState.IDLE);
 
-        // Save
+        log.info("Saving box...");
         Box savedBox = boxRepository.save(box);
 
         // Map to response
@@ -48,7 +51,7 @@ public class BoxServiceImpl implements BoxService {
         response.setWeightLimit(savedBox.getWeightLimit());
         response.setBatteryCapacity(savedBox.getBatteryCapacity());
         response.setState(savedBox.getState());
-        response.setItems(null); // no items yet
+        response.setItems(null);
 
         return ResponseUtil.success("Box created successfully", response);
     }
@@ -57,16 +60,16 @@ public class BoxServiceImpl implements BoxService {
     @Override
     public DefaultResponse<LoadBoxResponseDTO> loadBox(String txRef, LoadBoxRequestDTO request) {
 
-        // 1. Find box
+        log.info("Finding box by txRef");
         Box box = boxRepository.findByTxref(txRef)
                 .orElseThrow(() -> new RuntimeException("Box not found"));
 
-        // 2. Check battery
+        log.info("Checking box battery...");
         if (box.getBatteryCapacity() < 25) {
             throw new RuntimeException("Battery too low to load box");
         }
 
-        // 3. Convert DTOs to entities
+        // Convert DTOs to entities
         List<Item> items = request.getItems().stream().map(dto -> {
             Item item = new Item();
             item.setName(dto.getName());
@@ -76,7 +79,7 @@ public class BoxServiceImpl implements BoxService {
             return item;
         }).toList();
 
-        // 4. Calculate total weight
+        log.info("Calculating total weight");
         double newItemsWeight = items.stream()
                 .mapToDouble(Item::getWeight)
                 .sum();
@@ -86,7 +89,7 @@ public class BoxServiceImpl implements BoxService {
 
         double totalWeight = existingWeight + newItemsWeight;
 
-        // 5. Validate weight limit
+        //Validate weight limit
         if (totalWeight > 500) {
             throw new RuntimeException("Box weight limit exceeded (500g max)");
         }
@@ -94,23 +97,23 @@ public class BoxServiceImpl implements BoxService {
         // 6. Set state
         box.setState(BoxState.LOADING);
 
-        // 7. Save items
+        //Save items
         itemRepository.saveAll(items);
 
-        // 8. Attach items to box
+        //Attach items to box
         if (box.getItems() != null) {
             box.getItems().addAll(items);
         } else {
             box.setItems(items);
         }
 
-        // 9. Save box
+        //Save box
         boxRepository.save(box);
 
-        // 10. Return response
+        //Return response
         DefaultResponse response = new DefaultResponse<>();
         response.setStatus("00");
-        response.setMessage("Success");
+        response.setMessage("Item loaded into box successfully");
         return response;
     }
 
@@ -124,13 +127,17 @@ public class BoxServiceImpl implements BoxService {
             return List.of();
         }
 
-        return box.getItems().stream()
-                .map(item -> new ItemResponse(
-                        item.getName(),
-                        item.getWeight(),
-                        item.getCode()
-                ))
-                .toList();
+        List<ItemResponse> responseList = new ArrayList<>();
+
+        for (Item item : box.getItems()) {
+            ItemResponse response = new ItemResponse();
+            response.setName(item.getName());
+            response.setWeight(item.getWeight());
+            response.setCode(item.getCode());
+
+            responseList.add(response);
+        }
+        return responseList;
     }
 
     @Override

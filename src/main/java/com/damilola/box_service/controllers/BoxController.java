@@ -5,6 +5,7 @@ import com.damilola.box_service.DTOs.*;
 import com.damilola.box_service.services.BoxService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,28 +13,32 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/boxes")
 @RequiredArgsConstructor
+@Slf4j
 public class BoxController {
 
     private final BoxService boxService;
 
-    @PostMapping
+    @PostMapping("/create")
     public DefaultResponse<BoxResponse> createBox(
             @Valid @RequestBody CreateBoxRequest request
     ) {
+        log.info("[+]Inside create box controller");
         return boxService.createBox(request);
     }
 
     @PostMapping("/{txRef}/load")
     public DefaultResponse<LoadBoxResponseDTO>  loadBox(
             @PathVariable String txRef,
-            @RequestBody LoadBoxRequestDTO request
+            @Valid @RequestBody LoadBoxRequestDTO request
     ) {
+        log.info("[+]Inside loadBox controller");
         return boxService.loadBox(txRef, request);
     }
 
     @GetMapping("/{txRef}/items")
     public DefaultResponse<List<ItemResponse>> getLoadedItems(@PathVariable String txRef) {
 
+        log.info("[+]Inside getLoadedItems controller");
         List<ItemResponse> items = boxService.getLoadedItems(txRef);
 
         DefaultResponse<List<ItemResponse>> response = new DefaultResponse<>();
@@ -47,6 +52,7 @@ public class BoxController {
     @GetMapping("/available")
     public DefaultResponse<List<BoxResponseDTO>> getAvailableBoxes() {
 
+        log.info("[+]Inside getAvailableBoxes controller");
         List<BoxResponseDTO> boxes = boxService.getAvailableBoxes();
 
         DefaultResponse<List<BoxResponseDTO>> response = new DefaultResponse<>();
@@ -60,6 +66,7 @@ public class BoxController {
     @GetMapping("/{txRef}/battery")
     public DefaultResponse<Double> getBatteryLevel(@PathVariable String txRef) {
 
+        log.info("[+]Inside getBatteryLevel controller");
         Double battery = boxService.getBatteryLevel(txRef);
 
         DefaultResponse<Double> response = new DefaultResponse<>();
