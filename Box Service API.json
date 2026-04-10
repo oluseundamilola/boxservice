@@ -1,0 +1,526 @@
+{
+  "info": {
+    "name": "Box Service API",
+    "description": null,
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Box",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "disabled": false,
+            "type": "default"
+          }
+        ],
+        "auth": {
+          "type": "noauth"
+        },
+        "description": "",
+        "url": {
+          "raw": "{{baseUrl}}/boxes/create",
+          "protocol": "",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "boxes",
+            "create"
+          ],
+          "query": [],
+          "variable": []
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"txref\": \"BOX001\",\n  \"weightLimit\": 500,\n  \"batteryCapacity\": 80,\n  \"state\": \"IDLE\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": [
+        {
+          "name": "create box response",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/boxes/create",
+              "protocol": "",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "boxes",
+                "create"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"txref\": \"BOX001\",\n  \"weightLimit\": 500,\n  \"batteryCapacity\": 80,\n  \"state\": \"IDLE\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "content-type",
+              "value": "application/json",
+              "name": "content-type",
+              "description": "",
+              "type": "text"
+            },
+            {
+              "key": "transfer-encoding",
+              "value": "chunked",
+              "name": "transfer-encoding",
+              "description": "",
+              "type": "text"
+            },
+            {
+              "key": "date",
+              "value": "Fri, 10 Apr 2026 12:40:15 GMT",
+              "name": "date",
+              "description": "",
+              "type": "text"
+            },
+            {
+              "key": "keep-alive",
+              "value": "timeout=60",
+              "name": "keep-alive",
+              "description": "",
+              "type": "text"
+            },
+            {
+              "key": "connection",
+              "value": "keep-alive",
+              "name": "connection",
+              "description": "",
+              "type": "text"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"status\": \"00\",\n  \"message\": \"Box created successfully\",\n  \"data\": {\n    \"txref\": \"BOX001\",\n    \"weightLimit\": 500,\n    \"batteryCapacity\": 80,\n    \"state\": \"IDLE\",\n    \"items\": null\n  }\n}",
+          "_postman_previewlanguage": "json"
+        }
+      ]
+    },
+    {
+      "name": "Get Available Boxes",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "auth": {
+          "type": "noauth"
+        },
+        "description": "",
+        "url": {
+          "raw": "{{baseUrl}}/boxes/available",
+          "protocol": "",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "boxes",
+            "available"
+          ],
+          "query": [],
+          "variable": []
+        }
+      },
+      "response": [
+        {
+          "name": "available boxes",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/boxes/available",
+              "protocol": "",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "boxes",
+                "available"
+              ],
+              "query": [],
+              "variable": []
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "content-type",
+              "value": "application/json",
+              "name": "content-type",
+              "description": "",
+              "type": "text"
+            },
+            {
+              "key": "transfer-encoding",
+              "value": "chunked",
+              "name": "transfer-encoding",
+              "description": "",
+              "type": "text"
+            },
+            {
+              "key": "date",
+              "value": "Fri, 10 Apr 2026 15:40:50 GMT",
+              "name": "date",
+              "description": "",
+              "type": "text"
+            },
+            {
+              "key": "keep-alive",
+              "value": "timeout=60",
+              "name": "keep-alive",
+              "description": "",
+              "type": "text"
+            },
+            {
+              "key": "connection",
+              "value": "keep-alive",
+              "name": "connection",
+              "description": "",
+              "type": "text"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"status\": \"00\",\n  \"message\": \"Available boxes fetched successfully\",\n  \"data\": [\n    {\n      \"txRef\": \"BOX002\",\n      \"batteryCapacity\": 80,\n      \"currentWeight\": 0,\n      \"state\": \"IDLE\"\n    },\n    {\n      \"txRef\": \"BOX003\",\n      \"batteryCapacity\": 80,\n      \"currentWeight\": 0,\n      \"state\": \"IDLE\"\n    }\n  ]\n}",
+          "_postman_previewlanguage": "json"
+        }
+      ]
+    },
+    {
+      "name": "Get Battery Level",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "auth": {
+          "type": "noauth"
+        },
+        "description": "",
+        "url": {
+          "raw": "{{baseUrl}}/boxes/BOX001/battery",
+          "protocol": "",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "boxes",
+            "BOX001",
+            "battery"
+          ],
+          "query": [],
+          "variable": []
+        }
+      },
+      "response": [
+        {
+          "name": "battery level",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/boxes/BOX001/battery",
+              "protocol": "",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "boxes",
+                "BOX001",
+                "battery"
+              ],
+              "query": [],
+              "variable": []
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "content-type",
+              "value": "application/json",
+              "name": "content-type",
+              "description": "",
+              "type": "text"
+            },
+            {
+              "key": "transfer-encoding",
+              "value": "chunked",
+              "name": "transfer-encoding",
+              "description": "",
+              "type": "text"
+            },
+            {
+              "key": "date",
+              "value": "Fri, 10 Apr 2026 15:41:15 GMT",
+              "name": "date",
+              "description": "",
+              "type": "text"
+            },
+            {
+              "key": "keep-alive",
+              "value": "timeout=60",
+              "name": "keep-alive",
+              "description": "",
+              "type": "text"
+            },
+            {
+              "key": "connection",
+              "value": "keep-alive",
+              "name": "connection",
+              "description": "",
+              "type": "text"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"status\": \"00\",\n  \"message\": \"Battery level fetched successfully\",\n  \"data\": 80\n}",
+          "_postman_previewlanguage": "json"
+        }
+      ]
+    },
+    {
+      "name": "Get Loaded Items",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "auth": {
+          "type": "noauth"
+        },
+        "description": "",
+        "url": {
+          "raw": "{{baseUrl}}/boxes/BOX001/items",
+          "protocol": "",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "boxes",
+            "BOX001",
+            "items"
+          ],
+          "query": [],
+          "variable": []
+        }
+      },
+      "response": [
+        {
+          "name": "get loaded items",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/boxes/BOX001/items",
+              "protocol": "",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "boxes",
+                "BOX001",
+                "items"
+              ],
+              "query": [],
+              "variable": []
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "content-type",
+              "value": "application/json",
+              "name": "content-type",
+              "description": "",
+              "type": "text"
+            },
+            {
+              "key": "transfer-encoding",
+              "value": "chunked",
+              "name": "transfer-encoding",
+              "description": "",
+              "type": "text"
+            },
+            {
+              "key": "date",
+              "value": "Fri, 10 Apr 2026 15:39:49 GMT",
+              "name": "date",
+              "description": "",
+              "type": "text"
+            },
+            {
+              "key": "keep-alive",
+              "value": "timeout=60",
+              "name": "keep-alive",
+              "description": "",
+              "type": "text"
+            },
+            {
+              "key": "connection",
+              "value": "keep-alive",
+              "name": "connection",
+              "description": "",
+              "type": "text"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"status\": \"00\",\n  \"message\": \"Loaded items fetched successfully\",\n  \"data\": [\n    {\n      \"name\": \"Iphone_13\",\n      \"weight\": 100,\n      \"code\": \"IPHONE_19\"\n    },\n    {\n      \"name\": \"Iphone_14\",\n      \"weight\": 300,\n      \"code\": \"IPHONE_14\"\n    },\n    {\n      \"name\": \"Iphone_12\",\n      \"weight\": 100,\n      \"code\": \"IPHONE_11\"\n    }\n  ]\n}",
+          "_postman_previewlanguage": "json"
+        }
+      ]
+    },
+    {
+      "name": "Load Box with Items",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "disabled": false,
+            "type": "default"
+          }
+        ],
+        "auth": {
+          "type": "noauth"
+        },
+        "description": "",
+        "url": {
+          "raw": "{{baseUrl}}/boxes/BOX001/load",
+          "protocol": "",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "boxes",
+            "BOX001",
+            "load"
+          ],
+          "query": [],
+          "variable": []
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"items\": [\n    {\n      \"name\": \"Iphone_12\",\n      \"weight\": 100,\n      \"code\": \"IPHONE_12\"\n    },\n     {\n      \"name\": \"Iphone_10\",\n      \"weight\": 300,\n      \"code\": \"IPHONE_10\"\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": [
+        {
+          "name": "Load Item into Box",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/boxes/BOX001/load",
+              "protocol": "",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "boxes",
+                "BOX001",
+                "load"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    {\n      \"name\": \"Iphone_13\",\n      \"weight\": 100,\n      \"code\": \"IPHONE_19\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "content-type",
+              "value": "application/json",
+              "name": "content-type",
+              "description": "",
+              "type": "text"
+            },
+            {
+              "key": "transfer-encoding",
+              "value": "chunked",
+              "name": "transfer-encoding",
+              "description": "",
+              "type": "text"
+            },
+            {
+              "key": "date",
+              "value": "Fri, 10 Apr 2026 15:37:37 GMT",
+              "name": "date",
+              "description": "",
+              "type": "text"
+            },
+            {
+              "key": "keep-alive",
+              "value": "timeout=60",
+              "name": "keep-alive",
+              "description": "",
+              "type": "text"
+            },
+            {
+              "key": "connection",
+              "value": "keep-alive",
+              "name": "connection",
+              "description": "",
+              "type": "text"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"status\": \"00\",\n  \"message\": \"Item loaded into box successfully\",\n  \"data\": null\n}",
+          "_postman_previewlanguage": "json"
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api",
+      "type": "default"
+    }
+  ]
+}
