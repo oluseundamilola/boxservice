@@ -25,7 +25,7 @@ POST /boxes/{txRef}/load
 GET /boxes/{txRef}/items
 
 4. Get Available Boxes
-GET /boxes/available
+GET /boxes/available?page=0&size=10
 
 5. Get Battery Level
 GET /boxes/{txRef}/battery
