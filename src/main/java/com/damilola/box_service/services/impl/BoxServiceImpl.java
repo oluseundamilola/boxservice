@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -141,11 +142,11 @@ public class BoxServiceImpl implements BoxService {
     }
 
     @Override
-    public List<BoxResponseDTO> getAvailableBoxes() {
+    public PaginatedResponse<BoxResponseDTO> getAvailableBoxes(Pageable pageable) {
 
         List<Box> boxes = boxRepository.findAll();
 
-        List<BoxResponseDTO> result = new ArrayList<>();
+        List<BoxResponseDTO> filtered = new ArrayList<>();
 
         for (Box box : boxes) {
 
@@ -165,10 +166,25 @@ public class BoxServiceImpl implements BoxService {
             dto.setCurrentWeight(currentWeight);
             dto.setState(box.getState().name());
 
-            result.add(dto);
+            filtered.add(dto);
         }
 
-        return result;
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), filtered.size());
+
+        List<BoxResponseDTO> pageContent = filtered.subList(start, end);
+
+        int totalItems = filtered.size();
+        int totalPagesCount = (int) Math.ceil((double) totalItems / pageable.getPageSize());
+
+        PaginatedResponse<BoxResponseDTO> response = new PaginatedResponse<>();
+        response.setTotalContents(totalItems);
+        response.setTotalItems(totalItems);
+        response.setTotalPages((pageable.getPageNumber() + 1) + "/" + totalPagesCount);
+        response.setContents(pageContent);
+
+        return response;
     }
 
     @Override

@@ -6,8 +6,10 @@ import com.damilola.box_service.services.BoxService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @RestController
@@ -50,15 +52,18 @@ public class BoxController {
     }
 
     @GetMapping("/available")
-    public DefaultResponse<List<BoxResponseDTO>> getAvailableBoxes() {
+    public DefaultResponse<PaginatedResponse<BoxResponseDTO>> getAvailableBoxes(
+            @PageableDefault(size = 10) Pageable pageable
+    ) {
 
         log.info("[+]Inside getAvailableBoxes controller");
-        List<BoxResponseDTO> boxes = boxService.getAvailableBoxes();
 
-        DefaultResponse<List<BoxResponseDTO>> response = new DefaultResponse<>();
+        PaginatedResponse<BoxResponseDTO> page = boxService.getAvailableBoxes(pageable);
+
+        DefaultResponse<PaginatedResponse<BoxResponseDTO>> response = new DefaultResponse<>();
         response.setStatus("00");
         response.setMessage("Available boxes fetched successfully");
-        response.setData(boxes);
+        response.setData(page);
 
         return response;
     }
